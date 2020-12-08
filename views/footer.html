@@ -1,0 +1,11 @@
+{{define "footer"}}
+    </body>
+    <script src="../static/js/layui/layui.js"></script>
+    <script>
+        layui.use(['form', 'upload'], function(){
+            var form = layui.form;
+
+            form.render();  // 加入这一句
+        });
+    </script>
+{{end}}
