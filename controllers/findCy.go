@@ -76,7 +76,7 @@ func (c *MainController) Vague01(keyword string) {
 //配合同步模糊查询
 func (c *MainController) Accurate01(keyword string) (ret map[string]interface{}, err error) {
 	//time.Sleep(time.Second)
-	var url = "https://route.showapi.com/1196-2?keyword=" + keyword + "&page=1&rows=10&showapi_appid=468266&showapi_sign=9ae2de37560b4eeeb3ef0a7a07d8dd7f"
+	var url = "https://route.showapi.com/1196-2?keyword=" + keyword + "&page=1&rows=" + rows + "&showapi_appid=468266&showapi_sign=9ae2de37560b4eeeb3ef0a7a07d8dd7f"
 	str, _ := c.GetJson(url)
 	tempData := make(map[string]interface{})
 	err = json.Unmarshal([]byte(str), &tempData)
@@ -93,7 +93,7 @@ func (c *MainController) Accurate01(keyword string) (ret map[string]interface{},
 
 //异步模糊查询
 func (c *MainController) Vague02(keyword string) {
-	var url = "https://route.showapi.com/1196-1?keyword=" + keyword + "&page=1&rows=10&showapi_appid=468266&showapi_sign=9ae2de37560b4eeeb3ef0a7a07d8dd7f"
+	var url = "https://route.showapi.com/1196-1?keyword=" + keyword + "&page=1&rows=" + rows + "&showapi_appid=468266&showapi_sign=9ae2de37560b4eeeb3ef0a7a07d8dd7f"
 	str, _ := c.GetJson(url)
 	time.Sleep(time.Second)
 	tempData := make(map[string]interface{})
@@ -122,8 +122,11 @@ func (c *MainController) Vague02(keyword string) {
 		wg.Wait()
 		close(retCh)
 
-		for i := 0; i < 10; i++ {
+		for i := 0; i < chlen; i++ {
 			v := <-retCh
+			if v.Title == "" {
+				continue
+			}
 			idiomsMap[v.Title] = v
 		}
 
